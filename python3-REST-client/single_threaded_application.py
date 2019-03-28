@@ -5,9 +5,9 @@ api_path = "https://api.qume.io"
 timeout = 20
 
 # insert account-specific api keys
-api_key = "59e8a668-2232-48e0-871c-58f7d1baff24"
-api_secret = "2f49f047db8c5017f1a571463ead3ed4"
-api_passphrase = "example"
+api_key = "8ed72813-4882-475d-9ca2-edf3def4e169"
+api_secret = "685c6e4dd6046549e229ea19c3966c53"
+api_passphrase = "spen"
 
 # initialize instance of client
 qume_client = qume_api_methods(api_path, api_key=api_key, api_secret=api_secret, api_passphrase=api_passphrase, show_raw_request=False, timeout=timeout)
@@ -17,9 +17,17 @@ def test_api_methods():
     Tests each endpoint from the Qume REST API.
     '''
 
-    # get market statistics for a given market
+    # get all instruments
+    result = qume_client.get_all_instruments()
+    print("get_all_instruments:\n", result)
+
+    # get market statistics for a given instrument
     result = qume_client.get_market_statistics("BTCUSDQ")
     print("get_market_statistics:\n", result)
+
+    # get the orderbook for a given instrument
+    result = qume_client.get_orderbook("BTCUSDQ")
+    print("get_orderbook:\n", result)
 
     # get funding rate for a given market
     result = qume_client.get_funding_rate("BTCUSDQ")
@@ -36,14 +44,14 @@ def test_api_methods():
     # place a limit order
     symbol = "BTCUSDQ"
     side = "BUY"
-    price = 3000.00
+    price = 7000.00
     qty = 1
     type = "LIMIT"
     time_in_force = "UNTIL_CANCEL"
     post_only = False
     result = qume_client.place_order(symbol, side, price, qty, type, time_in_force, post_only)
     print("place_order:\n", result)
-
+    
     # place a stop order
     symbol = "BTCUSDQ"
     side = "SELL"

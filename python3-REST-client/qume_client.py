@@ -16,10 +16,21 @@ class qume_api_methods(object):
         self.timeout = timeout
         self.show_raw_request = show_raw_request
 
+    # returns all instruments
+    def get_all_instruments(self):
+        endpoint = "/v1/instruments"
+        return self.make_request("GET", endpoint)
+
     # returns market statistics for a given contract market
     def get_market_statistics(self, market_id):
         endpoint = "/v1/instruments"
         post_url_string = "/%s" % market_id
+        return self.make_request("GET", endpoint, post_url_string=post_url_string)
+
+    # returns the funding rate for a given contract market
+    def get_orderbook(self, market_id):
+        endpoint = "/v1/instruments"
+        post_url_string = "/%s" % market_id + "/orderbook"
         return self.make_request("GET", endpoint, post_url_string=post_url_string)
 
     # returns the funding rate for a given contract market
@@ -127,16 +138,16 @@ class qume_api_methods(object):
         url = self.api_path + endpoint + post_url_string
 
         if request_type == "GET":
-            r = requests.get(url, headers=http_headers)
+            r = requests.get(url, headers=http_headers, timeout=self.timeout)
         elif request_type == "POST":
             payload = post_body
-            r = requests.post(url, headers=http_headers, data=payload)
+            r = requests.post(url, headers=http_headers, data=payload, timeout=self.timeout)
         elif request_type == "PUT":
             payload = post_body
-            r = requests.put(url, headers=http_headers, data=payload)
+            r = requests.put(url, headers=http_headers, data=payload, timeout=self.timeout)
         elif request_type == "DELETE":
             payload = post_body
-            r = requests.delete(url, headers=http_headers, data=payload)
+            r = requests.delete(url, headers=http_headers, data=payload, timeout=self.timeout)
 
 
         return r.text
